@@ -49,12 +49,12 @@ const resolvers = {
             // Return an `Auth` object that consists of the signed token and user's information
             return { token, user };
         },
-        saveBook: async (parent, { bookInfo }, context) => {
+        saveBook: async (parent, { bookInput }, context) => {
             // method 1
             if (context.user) {
                 const updatedUser = await User.findOneAndUpdate(
                     { _id: context.user._id },
-                    { $addToSet: { savedBooks: bookInfo } },
+                    { $addToSet: { savedBooks: bookInput } },
                     { new: true, runValidators: true }
                 )
                 return updatedUser;
@@ -66,7 +66,7 @@ const resolvers = {
             if (context.user) {
                 return User.findOneAndUpdate(
                     { _id: context.user._id },
-                    { $addToSet: { savedBooks: bookInfo } },
+                    { $addToSet: { savedBooks: bookId } },
                     { new: true, runValidators: true }
                 );
             }
