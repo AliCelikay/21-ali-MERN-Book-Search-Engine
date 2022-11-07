@@ -8,7 +8,10 @@ const resolvers = {
         // By adding context to our query, we can retrieve the logged in user without specifically searching for them
         me: async (parent, args, context) => {
             if (context.user) {
-                return User.findOne({ _id: context.user._id });
+                console.log(`Book 4`)
+                const user = await User.findOne({ _id: context.user._id });
+                console.log(`USER: ${user}`)
+                return user;
             }
             throw new AuthenticationError('You need to be logged in!');
         },
@@ -51,12 +54,15 @@ const resolvers = {
         },
         saveBook: async (parent, { bookInput }, context) => {
             // method 1
+            console.log(`saveBook 1`)
             if (context.user) {
+                console.log(`saveBook 2`)
                 const updatedUser = await User.findOneAndUpdate(
                     { _id: context.user._id },
                     { $addToSet: { savedBooks: bookInput } },
                     { new: true, runValidators: true }
                 )
+                console.log(`saveBook 3`)
                 return updatedUser;
             }
             throw new AuthenticationError('You need to be logged in!');
@@ -64,11 +70,13 @@ const resolvers = {
         removeBook: async (parent, { bookId }, context) => {
             // method 2
             if (context.user) {
-                return User.findOneAndUpdate(
+                console.log(`DELETED BOOK 1`)
+                const updatedUser = await User.findOneAndUpdate(
                     { _id: context.user._id },
-                    { $addToSet: { savedBooks: bookId } },
+                    { $pull: { savedBooks: bookId } },
                     { new: true, runValidators: true }
                 );
+                return updatedUser;
             }
             throw new AuthenticationError('You need to be logged in!');
         },

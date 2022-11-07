@@ -10,8 +10,7 @@ import { removeBookId } from '../utils/localStorage';
 
 const SavedBooks = () => {
   const { loading, data } = useQuery(GET_ME);
-  const userData = data?.tech || [];
-
+  const userData = data?.me || [];
   const [deleteBook] = useMutation(REMOVE_BOOK);
 
   // create function that accepts the book's mongo _id value as param and deletes the book from the database
@@ -23,12 +22,18 @@ const SavedBooks = () => {
     }
 
     try {
-      await deleteBook({
-        variables: { bookId}
+      const deletedBook = await deleteBook({
+        variables: { bookId }
       })
-      
+      console.log(`DELETED BOOK 2`)
+      if(!deletedBook){
+        console.log(`ERROR`)
+      }
+      else{
+        
+      }
       // setUserData(updatedUser);
-      deleteBook(bookId);
+      // deleteBook(deletedBook);
       
       // upon success, remove book's id from localStorage
       removeBookId(bookId);
@@ -41,7 +46,6 @@ const SavedBooks = () => {
   if (loading) {
     return <h2>LOADING...</h2>;
   }
-
   return (
     <>
       <Jumbotron fluid className='text-light bg-dark'>
@@ -51,12 +55,13 @@ const SavedBooks = () => {
       </Jumbotron>
       <Container>
         <h2>
-          {userData.savedBooks.length
+          {userData?.savedBooks?.length
             ? `Viewing ${userData.savedBooks.length} saved ${userData.savedBooks.length === 1 ? 'book' : 'books'}:`
             : 'You have no saved books!'}
         </h2>
         <CardColumns>
-          {userData.savedBooks.map((book) => {
+          {/* if value exists then execute, shorter ternary */}
+          {userData?.savedBooks?.map((book) => {
             return (
               <Card key={book.bookId} border='dark'>
                 {book.image ? <Card.Img src={book.image} alt={`The cover for ${book.title}`} variant='top' /> : null}

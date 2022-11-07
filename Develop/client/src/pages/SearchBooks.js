@@ -23,7 +23,7 @@ const SearchBooks = () => {
     return () => saveBookIds(savedBookIds);
   });
   
-  const [saveBook] = useMutation(SAVE_BOOK);
+  const [saveBook] = useMutation(SAVE_BOOK);////////
 
   // create method to search for books and set state on form submit
   const handleFormSubmit = async (event) => {
@@ -58,7 +58,7 @@ const SearchBooks = () => {
   };
 
   // create function to handle saving a book to our database
-  const handleSaveBook = async (bookId) => { ////////////////////////////////////////////////////////////////////////////
+  const handleSaveBook = async (bookId) => { 
     // find the book in `searchedBooks` state by the matching id
     const bookToSave = searchedBooks.find((book) => book.bookId === bookId);
 
@@ -72,7 +72,8 @@ const SearchBooks = () => {
     try {
       // const response = await saveBook(bookToSave, token);
       await saveBook({
-        variables: { bookToSave}
+        // grabbing bookInput from mutations and giving back book information to save
+        variables: { bookInput: bookToSave}
       })
 
       // if book successfully saves to user's account, save book id to state
@@ -111,12 +112,12 @@ const SearchBooks = () => {
 
       <Container>
         <h2>
-          {searchedBooks.length
+          {searchedBooks?.length
             ? `Viewing ${searchedBooks.length} results:`
             : 'Search for a book to begin'}
         </h2>
         <CardColumns>
-          {searchedBooks.map((book) => {
+          {searchedBooks?.map((book) => {
             return (
               <Card key={book.bookId} border='dark'>
                 {book.image ? (
