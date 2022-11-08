@@ -29,9 +29,6 @@ const SavedBooks = () => {
       if(!deletedBook){
         console.log(`ERROR`)
       }
-      else{
-        
-      }
       // setUserData(updatedUser);
       // deleteBook(deletedBook);
       

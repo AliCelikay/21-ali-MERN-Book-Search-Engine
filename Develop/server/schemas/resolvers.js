@@ -73,7 +73,7 @@ const resolvers = {
                 console.log(`DELETED BOOK 1`)
                 const updatedUser = await User.findOneAndUpdate(
                     { _id: context.user._id },
-                    { $pull: { savedBooks: bookId } },
+                    { $pull: { savedBooks: {bookId} } },
                     { new: true, runValidators: true }
                 );
                 return updatedUser;
