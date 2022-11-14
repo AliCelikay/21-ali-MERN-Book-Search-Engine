@@ -1,6 +1,6 @@
 const express = require('express');
 const path = require('path');
-const db = require('./config/connection');
+const db = require('./config/connection')
 // Import the ApolloServer class
 const { ApolloServer } = require('apollo-server-express');
 // Import the two parts of a GraphQL schema
@@ -22,6 +22,10 @@ app.use(express.json());
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static(path.join(__dirname, '../client/build')));
 }
+
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, '../client/'));
+})
 
 // Create a new instance of an Apollo server with the GraphQL schema
 const startApolloServer = async (typeDefs, resolvers) => {
